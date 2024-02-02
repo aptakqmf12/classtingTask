@@ -1,10 +1,15 @@
-import Image from "next/image";
+"use client";
+
+import { useRouter } from "next/navigation";
 import Button from "./_component/button";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div>
-      <Button size="s">버튼입니다</Button>
+      <Button size="xl" onClick={() => router.push("/quiz")}>
+        퀴즈풀기
+      </Button>
     </div>
   );
 }
