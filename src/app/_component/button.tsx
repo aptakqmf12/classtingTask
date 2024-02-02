@@ -2,7 +2,7 @@ import React, { ReactNode, MouseEvent, Attributes } from "react";
 
 export interface ButtonProps {
   children: ReactNode;
-  size: "xs" | "s" | "m" | "l" | "xl";
+  size?: "xs" | "s" | "m" | "l" | "xl";
   bg?: string;
   color?: string;
   disabled?: boolean;

@@ -7,5 +7,5 @@ test("Home 렌더링 테스트", () => {
 
   const button = screen.getByRole("button", { name: /버튼입니다/i });
 
-  expect(button).toBeIntheDocument();
+  expect(button).toBeIntheDocument(); //why?
 });
