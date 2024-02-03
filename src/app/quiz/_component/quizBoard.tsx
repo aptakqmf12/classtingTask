@@ -4,6 +4,8 @@ import { useState, useMemo, useEffect } from "react";
 import type { Quiz } from "@/api";
 import Button from "@/app/_component/button";
 import Toast from "@/app/_component/toast";
+import { useToastStore } from "@/store/toast";
+import { useCountStore } from "@/store/count";
 
 interface Props {
   quizList: Quiz[];
@@ -18,18 +20,22 @@ export default function QuizBoard({
   setStep,
   handleSelectQuiz,
 }: Props) {
+  const { count } = useCountStore();
   return (
-    <ul>
-      {quizList.slice(step, step + 1).map((quiz, i) => (
-        <QuizCard
-          {...quiz}
-          step={step}
-          setStep={setStep}
-          handleSelectQuiz={handleSelectQuiz}
-          key={i}
-        />
-      ))}
-    </ul>
+    <>
+      <div>현재시간 : {count}</div>
+      <ul>
+        {quizList.slice(step, step + 1).map((quiz, i) => (
+          <QuizCard
+            {...quiz}
+            step={step}
+            setStep={setStep}
+            handleSelectQuiz={handleSelectQuiz}
+            key={i}
+          />
+        ))}
+      </ul>
+    </>
   );
 }
 
@@ -52,7 +58,7 @@ const QuizCard = (
     setStep,
     handleSelectQuiz,
   } = props;
-  const [showToast, setShowToast] = useState(false);
+  const { showToast, setShowToast } = useToastStore();
   const [selectedAnswer, setSelectedAnswer] = useState<string>();
 
   const shuffledAnswerList = useMemo(() => {
@@ -70,12 +76,23 @@ const QuizCard = (
 
     setStep(step + 1);
     setSelectedAnswer(undefined);
-    setShowToast(true);
     handleSelectQuiz(selectedAnswer);
+
+    setShowToast(true);
   };
 
   useEffect(() => {
-    setShowToast(false); //fix toast to global
+    const destroyToast = () => {
+      setShowToast(false);
+    };
+
+    let timer = setTimeout(() => {
+      destroyToast();
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [step]);
 
   return (
@@ -102,6 +119,8 @@ const QuizCard = (
         </ul>
 
         {selectedAnswer && <Button onClick={handleNextStep}>다음</Button>}
+
+        <div>hint = {String(selectedAnswer === correct_answer)}</div>
       </li>
 
       {showToast && (

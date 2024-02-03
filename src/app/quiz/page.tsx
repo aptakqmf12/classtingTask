@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getQuizList } from "@/api";
 import type { Quiz } from "@/api";
+import { useCountStore } from "@/store/count";
 
 import QuizBoard from "./_component/quizBoard";
 import ResultBoard from "./_component/resultBoard";
@@ -11,6 +12,8 @@ export default function QuizPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [step, setStep] = useState(0);
   const [quizList, setQuizList] = useState<Quiz[]>([]);
+
+  const { setIsCounting } = useCountStore();
 
   const handleSelectQuiz = (selected_answer: string) => {
     setQuizList(
@@ -26,6 +29,7 @@ export default function QuizPage() {
         if (res.status === 200) {
           setQuizList(res.data.results);
           setIsLoading(false);
+          setIsCounting(true);
         }
       })
       .catch((err) => console.error(err));
@@ -36,11 +40,15 @@ export default function QuizPage() {
   return step === quizList.length ? (
     <ResultBoard quizList={quizList} />
   ) : (
-    <QuizBoard
-      quizList={quizList}
-      step={step}
-      setStep={setStep}
-      handleSelectQuiz={handleSelectQuiz}
-    />
+    <>
+      <div>
+        <QuizBoard
+          quizList={quizList}
+          step={step}
+          setStep={setStep}
+          handleSelectQuiz={handleSelectQuiz}
+        />
+      </div>
+    </>
   );
 }
