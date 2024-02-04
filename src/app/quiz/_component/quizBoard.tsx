@@ -4,8 +4,9 @@ import { useState, useMemo, useEffect } from "react";
 import type { Quiz } from "@/api";
 import Button from "@/app/_component/button";
 import Toast from "@/app/_component/toast";
-import { useToastStore } from "@/store/toast";
+import { useToastStore, ToastStatus } from "@/store/toast";
 import { useCountStore } from "@/store/count";
+import { numberToTime } from "../../../util/time";
 
 interface Props {
   quizList: Quiz[];
@@ -21,9 +22,16 @@ export default function QuizBoard({
   handleSelectQuiz,
 }: Props) {
   const { count } = useCountStore();
+  const { setHideToast } = useToastStore();
+  useEffect(() => {
+    return () => {
+      setHideToast();
+    };
+  }, []);
   return (
-    <>
-      <div>현재시간 : {count}</div>
+    <div className="flex flex-col p-4 ">
+      <div className="text-right">소요시간 : {numberToTime(count)}</div>
+
       <ul>
         {quizList.slice(step, step + 1).map((quiz, i) => (
           <QuizCard
@@ -35,30 +43,29 @@ export default function QuizBoard({
           />
         ))}
       </ul>
-    </>
+    </div>
   );
 }
 
-const QuizCard = (
-  props: Quiz & {
-    step: number;
-    setStep: (v: number) => void;
-    handleSelectQuiz: (v: string) => void;
-  }
+export const QuizCard = (
+  props: Quiz &
+    Partial<{
+      step: number;
+      setStep: (v: number) => void;
+      handleSelectQuiz: (v: string) => void;
+    }>
 ) => {
   const {
-    category,
-    difficulty,
-    type,
     correct_answer,
     incorrect_answers,
     question,
 
-    step,
-    setStep,
-    handleSelectQuiz,
+    step = 0,
+    setStep = () => {},
+    handleSelectQuiz = () => {},
   } = props;
-  const { showToast, setShowToast } = useToastStore();
+  const { showToast, toastStatus, setShowToast, setHideToast } =
+    useToastStore();
   const [selectedAnswer, setSelectedAnswer] = useState<string>();
 
   const shuffledAnswerList = useMemo(() => {
@@ -78,12 +85,14 @@ const QuizCard = (
     setSelectedAnswer(undefined);
     handleSelectQuiz(selectedAnswer);
 
-    setShowToast(true);
+    setShowToast(
+      selectedAnswer === correct_answer ? ToastStatus.SUCCESS : ToastStatus.FAIL
+    );
   };
 
   useEffect(() => {
     const destroyToast = () => {
-      setShowToast(false);
+      setHideToast();
     };
 
     let timer = setTimeout(() => {
@@ -98,8 +107,8 @@ const QuizCard = (
   return (
     <>
       <li>
-        <div>
-          Q{step + 1}. : {question}
+        <div className="text-lg font-bold mb-2">
+          문제{step + 1}. : {question}
         </div>
 
         <ul>
@@ -108,24 +117,31 @@ const QuizCard = (
 
             return (
               <li
+                className="text-md font-normal mb-1"
                 style={{ color: isSelected ? "#0f0" : "#fff" }}
-                onClick={() => handleSelectAnswer(answer)}
                 key={i}
               >
-                {i + 1}. {answer}
+                <span
+                  className="cursor-pointer"
+                  onClick={() => handleSelectAnswer(answer)}
+                >
+                  {i + 1}. {answer}
+                </span>
               </li>
             );
           })}
         </ul>
 
-        {selectedAnswer && <Button onClick={handleNextStep}>다음</Button>}
-
-        <div>hint = {String(selectedAnswer === correct_answer)}</div>
+        {selectedAnswer && (
+          <div className="flex items-center justify-center mt-8">
+            <Button size="l" onClick={handleNextStep}>
+              다음
+            </Button>
+          </div>
+        )}
       </li>
 
-      {showToast && (
-        <Toast type={selectedAnswer === correct_answer ? "success" : "error"} />
-      )}
+      {showToast && toastStatus && <Toast type={toastStatus} />}
     </>
   );
 };

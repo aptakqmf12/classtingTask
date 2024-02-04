@@ -50,10 +50,8 @@ export default function Button({
     <button
       onClick={onClick}
       disabled={disabled}
+      className="border border-white rounded-md py-1 px-4"
       style={{
-        border: "1px white solid",
-        borderRadius: 4,
-        padding: "4px 12px",
         backgroundColor: disabled ? "#eee" : bg,
         color: disabled ? "#bfbfbf" : color,
         ...sx(),

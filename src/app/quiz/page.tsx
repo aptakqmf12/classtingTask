@@ -9,11 +9,11 @@ import QuizBoard from "./_component/quizBoard";
 import ResultBoard from "./_component/resultBoard";
 
 export default function QuizPage() {
+  const { setIsCounting } = useCountStore();
+
   const [isLoading, setIsLoading] = useState(true);
   const [step, setStep] = useState(0);
   const [quizList, setQuizList] = useState<Quiz[]>([]);
-
-  const { setIsCounting } = useCountStore();
 
   const handleSelectQuiz = (selected_answer: string) => {
     setQuizList(
@@ -32,7 +32,9 @@ export default function QuizPage() {
           setIsCounting(true);
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   if (isLoading) return "loading...";
@@ -40,15 +42,11 @@ export default function QuizPage() {
   return step === quizList.length ? (
     <ResultBoard quizList={quizList} />
   ) : (
-    <>
-      <div>
-        <QuizBoard
-          quizList={quizList}
-          step={step}
-          setStep={setStep}
-          handleSelectQuiz={handleSelectQuiz}
-        />
-      </div>
-    </>
+    <QuizBoard
+      quizList={quizList}
+      step={step}
+      setStep={setStep}
+      handleSelectQuiz={handleSelectQuiz}
+    />
   );
 }

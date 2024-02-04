@@ -4,6 +4,9 @@ import { useEffect } from "react";
 import type { Quiz } from "@/api";
 import { useCountStore } from "@/store/count";
 import DoughnutChart from "@/app/_component/doughnutChart";
+import { numberToTime } from "@/util/time";
+
+import { QuizCard } from "./quizBoard";
 
 interface Props {
   quizList: Quiz[];
@@ -26,9 +29,8 @@ export default function ResultBoard({ quizList }: Props) {
   }, []);
 
   return (
-    <div>
-      <h3>오답노트</h3>
-      <div>소요된 시간 : {count}</div>
+    <div className="flex flex-col p-4 ">
+      <div className="text-right">소요된 시간 : {numberToTime(count)}</div>
 
       <div>
         결과 : {correctScore}/{quizList.length}
@@ -37,13 +39,14 @@ export default function ResultBoard({ quizList }: Props) {
       <ul>
         {quizList.map((quiz, i) => (
           <li style={{ padding: 10 }} key={i}>
+            <QuizCard {...quiz} />
             <div>정답 : {quiz.correct_answer}</div>
             <div>나의 선택 : {quiz.selected_answer}</div>
           </li>
         ))}
       </ul>
 
-      <div>
+      <div className="w-1/2">
         <DoughnutChart
           correctScore={correctScore}
           incorrectScore={incorrectScore}

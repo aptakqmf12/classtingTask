@@ -12,8 +12,9 @@ export default function Home() {
   useEffect(() => {
     initCount();
   }, []);
+
   return (
-    <div>
+    <div className="w-dvw h-dvh flex justify-center items-center ">
       <Button size="xl" onClick={() => router.push("/quiz")}>
         퀴즈풀기
       </Button>

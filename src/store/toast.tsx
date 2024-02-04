@@ -1,17 +1,27 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
+export enum ToastStatus {
+  SUCCESS = "success",
+  FAIL = "fail",
+}
 interface ToastState {
   showToast: boolean;
-  setShowToast: (bool: boolean) => void;
+  toastStatus: ToastStatus | undefined;
+  setShowToast: (status: ToastStatus) => void;
+  setHideToast: () => void;
 }
 
 export const useToastStore = create<ToastState>()(
   devtools(
     (set) => ({
       showToast: false,
-      setShowToast: (bool) => {
-        set((state) => ({ showToast: bool }));
+      toastStatus: undefined,
+      setShowToast: (status) => {
+        set((state) => ({ showToast: true, toastStatus: status }));
+      },
+      setHideToast: () => {
+        set((state) => ({ showToast: false, toastStatus: undefined }));
       },
     }),
     {
