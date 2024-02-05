@@ -2,7 +2,7 @@ import React, { ReactNode, MouseEvent, Attributes } from "react";
 
 export interface ButtonProps {
   children: ReactNode;
-  size: "xs" | "s" | "m" | "l" | "xl";
+  size?: "xs" | "s" | "m" | "l" | "xl";
   bg?: string;
   color?: string;
   disabled?: boolean;
@@ -50,14 +50,13 @@ export default function Button({
     <button
       onClick={onClick}
       disabled={disabled}
+      className="border border-white rounded-md py-1 px-4"
       style={{
-        border: "1px white solid",
-        borderRadius: 4,
-        padding: "4px 12px",
         backgroundColor: disabled ? "#eee" : bg,
         color: disabled ? "#bfbfbf" : color,
         ...sx(),
       }}
+      role="button"
     >
       {children}
     </button>

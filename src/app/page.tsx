@@ -1,10 +1,22 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect } from "react";
 import Button from "./_component/button";
+import Link from "next/link";
+import { useCountStore } from "@/store/count";
 
 export default function Home() {
+  const { initCount } = useCountStore();
+
+  useEffect(() => {
+    initCount();
+  }, []);
+
   return (
-    <div>
-      <Button size="s">버튼입니다</Button>
+    <div className="w-dvw h-dvh flex justify-center items-center ">
+      <Button size="xl">
+        <Link href={"/quiz"}>퀴즈풀기</Link>
+      </Button>
     </div>
   );
 }
