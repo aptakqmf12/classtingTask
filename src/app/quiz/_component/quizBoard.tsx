@@ -23,11 +23,13 @@ export default function QuizBoard({
 }: QuizBoardProps) {
   const { count } = useCountStore();
   const { setHideToast } = useToastStore();
+
   useEffect(() => {
     return () => {
       setHideToast();
     };
-  }, []);
+  }, [setHideToast]);
+
   return (
     <div className="flex flex-col p-4 ">
       <div className="text-right">소요시간 : {numberToTime(count)}</div>
@@ -102,7 +104,7 @@ export const QuizCard = (
     return () => {
       clearTimeout(timer);
     };
-  }, [step]);
+  }, [step, setHideToast]);
 
   return (
     <>
