@@ -35,7 +35,7 @@ export default function QuizPage() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [setQuizList, setIsLoading, setIsCounting]);
 
   if (isLoading) return "loading...";
 

@@ -26,7 +26,7 @@ export default function ResultBoard({ quizList }: Props) {
 
   useEffect(() => {
     setIsCounting(false);
-  }, []);
+  }, [setIsCounting]);
 
   return (
     <div className="flex flex-col p-4 ">

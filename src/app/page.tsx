@@ -10,7 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     initCount();
-  }, []);
+  }, [initCount]);
 
   return (
     <div className="w-dvw h-dvh flex justify-center items-center ">
