@@ -38,7 +38,7 @@ export default function ResultBoard({ quizList }: Props) {
 
       <ul>
         {quizList.map((quiz, i) => (
-          <QuizCard {...quiz} key={i} />
+          <QuizCard {...quiz} step={i} key={i} />
         ))}
       </ul>
 
