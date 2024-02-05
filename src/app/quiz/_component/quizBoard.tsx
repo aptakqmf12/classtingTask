@@ -74,7 +74,7 @@ export const QuizCard = (
     return [...incorrect_answers, correct_answer].sort(
       () => Math.random() - 0.5
     );
-  }, [step]);
+  }, [step, incorrect_answers, correct_answer]);
 
   const handleSelectAnswer = (answer: string) => {
     setSelectedAnswer(answer);
