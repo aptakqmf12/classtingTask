@@ -8,7 +8,7 @@ import { useToastStore, ToastStatus } from "@/store/toast";
 import { useCountStore } from "@/store/count";
 import { numberToTime } from "../../../util/time";
 
-interface Props {
+export interface QuizBoardProps {
   quizList: Quiz[];
   step: number;
   setStep: (v: number) => void;
@@ -20,7 +20,7 @@ export default function QuizBoard({
   step,
   setStep,
   handleSelectQuiz,
-}: Props) {
+}: QuizBoardProps) {
   const { count } = useCountStore();
   const { setHideToast } = useToastStore();
   useEffect(() => {
@@ -106,8 +106,8 @@ export const QuizCard = (
 
   return (
     <>
-      <li>
-        <div className="text-lg font-bold mb-2">
+      <li data-testid="quiz">
+        <div className="text-lg font-bold mb-2" data-testid="quiz-title">
           문제{step + 1}. : {question}
         </div>
 
@@ -118,6 +118,7 @@ export const QuizCard = (
             return (
               <li
                 className="text-md font-normal mb-1"
+                data-testid="quiz-answer"
                 style={{ color: isSelected ? "#0f0" : "#fff" }}
                 key={i}
               >

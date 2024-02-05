@@ -32,21 +32,17 @@ export default function ResultBoard({ quizList }: Props) {
     <div className="flex flex-col p-4 ">
       <div className="text-right">소요된 시간 : {numberToTime(count)}</div>
 
-      <div>
+      <div data-testid="result-score">
         결과 : {correctScore}/{quizList.length}
       </div>
 
       <ul>
         {quizList.map((quiz, i) => (
-          <li style={{ padding: 10 }} key={i}>
-            <QuizCard {...quiz} />
-            <div>정답 : {quiz.correct_answer}</div>
-            <div>나의 선택 : {quiz.selected_answer}</div>
-          </li>
+          <QuizCard {...quiz} key={i} />
         ))}
       </ul>
 
-      <div className="w-1/2">
+      <div className="w-1/2" data-testid="result-chart">
         <DoughnutChart
           correctScore={correctScore}
           incorrectScore={incorrectScore}

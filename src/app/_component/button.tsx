@@ -56,6 +56,7 @@ export default function Button({
         color: disabled ? "#bfbfbf" : color,
         ...sx(),
       }}
+      role="button"
     >
       {children}
     </button>
