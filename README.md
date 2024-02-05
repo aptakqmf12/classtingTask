@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## command
 
-## Getting Started
+- `npm run dev` : dev모드 실행(use turbopack)
+- `npm run test` : jest 실행
+- `npm run storybook` : storybook 실행 (6006 port)
 
-First, run the development server:
+## Directory (src내부)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- `app` : next의 app router
+- `api` : rest api
+- `store` : zustand store
+- `stories` : 공통 컴포넌트를 테스트할 storybook
+- `util` : 기타 유틸로직들
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Test
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `app/main.test.tsx`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+  - [x] <Home />의 렌더링시 버튼의 존재여부 확인
+  - [] "퀴즈풀기" 버튼 클릭시 quiz 페이지로 이동 하는지 확인
 
-## Learn More
+- `app/quiz/quiz.test.tsx`
 
-To learn more about Next.js, take a look at the following resources:
+  - [] 미정
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `app/quiz/_component/quizBoard.test.tsx`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+  - [x] <QuizBoard />의 렌더링시 title, answer의 개수가 알맞게 나오고 클릭전에 다음버튼이 나오지않는지 확인
+  - [] 지문을 하나 클릭시에 해당 지문만 하이라이트되고, 다음버튼이 나오는지 확인
+  - [] 다음버튼 클릭시 다음 지문이 나오는지 확인
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `app/quiz/_component/resultBoard.test.tsx`
+  - [x] <ResultBoard />의 렌더링시 최종 스코어, 전체 문제 리스트, 스코어에 대한 차트가 잘 나오는 지확인

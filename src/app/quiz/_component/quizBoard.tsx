@@ -34,7 +34,7 @@ export default function QuizBoard({
     <div className="flex flex-col p-4 ">
       <div className="text-right">소요시간 : {numberToTime(count)}</div>
 
-      <ul>
+      <ul className="mt-2">
         {quizList.slice(step, step + 1).map((quiz, i) => (
           <QuizCard
             {...quiz}

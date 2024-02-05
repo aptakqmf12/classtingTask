@@ -2,12 +2,11 @@ import React from "react";
 
 import { ToastStatus } from "@/store/toast";
 
-interface ToastProps {
+export interface ToastProps {
   type: ToastStatus;
 }
 
 export default function Toast({ type = ToastStatus.SUCCESS }: ToastProps) {
-  console.log("type", type);
   const color = type === ToastStatus.SUCCESS ? "blue" : "red";
   return (
     <div
