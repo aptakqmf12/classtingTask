@@ -13,7 +13,7 @@ const meta = {
 
   argTypes: {
     type: {
-      control: "select",
+      control: "inline-radio",
       options: [ToastStatus.SUCCESS, ToastStatus.FAIL],
     },
   },

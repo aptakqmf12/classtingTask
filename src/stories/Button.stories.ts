@@ -25,7 +25,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     size: "m",
-    children: "버튼",
+    children: "퀴즈풀기",
     color: "#fff",
     bg: "#000",
     disabled: false,
