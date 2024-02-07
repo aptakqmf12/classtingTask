@@ -2,8 +2,6 @@ import { screen, render, waitFor, act } from "@testing-library/react";
 import QuizBoard, { QuizBoardProps } from "./quizBoard";
 import userEvent from "@testing-library/user-event";
 
-const user = userEvent.setup();
-
 const MOCK_PROPS: QuizBoardProps = {
   quizList: [
     {
@@ -45,19 +43,21 @@ test("렌더링시 첫번째 문제 노출이 잘되는지 테스트", () => {
   expect(nextBtn).not.toBeInTheDocument();
 });
 
-test.skip("지문 선택시 테스트", async () => {
+test("지문 선택시 테스트", async () => {
+  const user = userEvent.setup();
+
   render(<QuizBoard {...MOCK_PROPS} />);
   const [first, second] = screen.getAllByTestId("quiz-answer");
 
   expect(first).toHaveStyle("color:#fff");
   expect(second).toHaveStyle("color:#fff");
 
-  await waitFor(async () => await user.click(first));
+  await user.click(first);
 
   expect(first).toHaveStyle("color:#0f0");
   expect(second).toHaveStyle("color:#fff");
 
-  await waitFor(async () => await user.click(second));
+  await user.click(second);
 
   expect(first).toHaveStyle("color:#fff");
   expect(second).toHaveStyle("color:#0f0");

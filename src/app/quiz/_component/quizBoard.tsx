@@ -117,12 +117,10 @@ export const QuizCard = (
                 className="text-md font-normal mb-1"
                 data-testid="quiz-answer"
                 style={{ color: isSelected ? "#0f0" : "#fff" }}
+                onClick={() => handleSelectAnswer(answer)}
                 key={i}
               >
-                <span
-                  className="cursor-pointer"
-                  onClick={() => handleSelectAnswer(answer)}
-                >
+                <span className="cursor-pointer">
                   {i + 1}. {answer}
                 </span>
               </li>

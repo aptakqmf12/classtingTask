@@ -20,7 +20,7 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-test.skip("데이터 fetch 실패 테스트", async () => {
+test("데이터 fetch 실패 테스트", async () => {
   server.use(
     http.get(
       "https://opentdb.com/api.php?amount=10&category=21&difficulty=easy&type=multiple",
@@ -36,6 +36,7 @@ test.skip("데이터 fetch 실패 테스트", async () => {
     </Providers>
   );
 
-  const errorText = await screen.getByText("응답실패");
+  const errorText = await screen.findByText("응답실패");
+
   expect(errorText).toBeInTheDocument();
 });
