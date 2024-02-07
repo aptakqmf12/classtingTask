@@ -1,10 +1,10 @@
-## command
+# command
 
 - `npm run dev` : dev모드 실행(use turbopack)
-- `npm run test` : jest 실행
+- `npm run test:watch` : jest 실행
 - `npm run storybook` : storybook 실행 (6006 port)
 
-## Directory (src내부)
+# Directory (src내부)
 
 - `app` : next의 app router
 - `api` : rest api
@@ -12,7 +12,9 @@
 - `stories` : 공통 컴포넌트를 테스트할 storybook
 - `util` : 기타 유틸로직들
 
-## Test
+# Test
+
+## 단위 테스트 (@testing-library)
 
 - `app/main.test.tsx`
 
@@ -31,3 +33,9 @@
 
 - `app/quiz/_component/resultBoard.test.tsx`
   - [x] 렌더링시 최종 스코어, 전체 문제 리스트, 스코어에 대한 차트가 잘 나오는 지확인
+
+## 컴포넌트 테스트 (Stroybook)
+
+- Button : 사이즈, 배경색, 글자색, 비활성화 테스트
+- Toast : 성공, 실패시 테스트
+- DoughnutChart : 사이즈, 정답 및 오답 score에 따른 차트변화, legend사용유무 테스트
