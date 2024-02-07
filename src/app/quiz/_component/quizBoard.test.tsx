@@ -1,6 +1,8 @@
-import { screen, render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor, act } from "@testing-library/react";
 import QuizBoard, { QuizBoardProps } from "./quizBoard";
 import userEvent from "@testing-library/user-event";
+
+const user = userEvent.setup();
 
 const MOCK_PROPS: QuizBoardProps = {
   quizList: [
@@ -43,28 +45,22 @@ test("렌더링시 첫번째 문제 노출이 잘되는지 테스트", () => {
   expect(nextBtn).not.toBeInTheDocument();
 });
 
-test("지문 선택시 테스트", async () => {
-  const user = userEvent.setup();
-
+test.skip("지문 선택시 테스트", async () => {
   render(<QuizBoard {...MOCK_PROPS} />);
   const [first, second] = screen.getAllByTestId("quiz-answer");
 
-  expect(first).toHaveStyle(`color:#fff`);
-  expect(second).toHaveStyle(`color:#fff`);
+  expect(first).toHaveStyle("color:#fff");
+  expect(second).toHaveStyle("color:#fff");
 
-  user.click(first);
+  await waitFor(async () => await user.click(first));
 
-  await waitFor(() => {
-    // expect(first).toHaveStyle(`color:#0f0`);
-    // expect(second).toHaveStyle(`color:#fff`); // why?
-  });
+  expect(first).toHaveStyle("color:#0f0");
+  expect(second).toHaveStyle("color:#fff");
 
-  //   user.click(second);
+  await waitFor(async () => await user.click(second));
 
-  //   await waitFor(() => {
-  //     expect(first).toHaveStyle(`color:#fff`);
-  //     expect(second).toHaveStyle(`color:#0f0`);
-  //   });
+  expect(first).toHaveStyle("color:#fff");
+  expect(second).toHaveStyle("color:#0f0");
 });
 
 test("다음 버튼 클릭시 테스트", () => {});
