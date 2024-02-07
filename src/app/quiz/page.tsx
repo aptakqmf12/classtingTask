@@ -4,16 +4,21 @@ import { useState, useEffect } from "react";
 import { getQuizList } from "@/api";
 import type { Quiz } from "@/api";
 import { useCountStore } from "@/store/count";
+import { useQuery } from "@tanstack/react-query";
 
 import QuizBoard from "./_component/quizBoard";
 import ResultBoard from "./_component/resultBoard";
+import { numberToTime } from "@/util/time";
 
 export default function QuizPage() {
-  const { setIsCounting } = useCountStore();
-
-  const [isLoading, setIsLoading] = useState(true);
+  const { count, setCountUp, isCounting, setIsCounting } = useCountStore();
   const [step, setStep] = useState(0);
   const [quizList, setQuizList] = useState<Quiz[]>([]);
+
+  const { data, isError, isLoading, isSuccess } = useQuery({
+    queryKey: ["quizList"],
+    queryFn: getQuizList,
+  });
 
   const handleSelectQuiz = (selected_answer: string) => {
     setQuizList(
@@ -24,30 +29,54 @@ export default function QuizPage() {
   };
 
   useEffect(() => {
-    getQuizList()
-      .then((res) => {
-        if (res.status === 200) {
-          setQuizList(res.data.results);
-          setIsLoading(false);
-          setIsCounting(true);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("응답실패");
-      });
-  }, [setQuizList, setIsLoading, setIsCounting]);
+    if (!data) return;
 
-  if (isLoading) return "응답실패";
+    setQuizList(data.data.results || []);
+  }, [data]);
 
-  return step === quizList.length ? (
-    <ResultBoard quizList={quizList} />
-  ) : (
-    <QuizBoard
-      quizList={quizList}
-      step={step}
-      setStep={setStep}
-      handleSelectQuiz={handleSelectQuiz}
-    />
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (isCounting) {
+      timer = setInterval(() => {
+        setCountUp();
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [isCounting]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsCounting(true);
+    }
+  }, [isSuccess]);
+
+  if (isError) return <div>응답실패</div>;
+  if (isLoading) return <div>...loading</div>;
+
+  return (
+    <>
+      <div
+        className={`text-right ${
+          isCounting ? "text-yellow-200" : "text-white"
+        }`}
+      >
+        소요시간 : {numberToTime(count)}
+      </div>
+
+      {step === quizList.length ? (
+        <ResultBoard quizList={quizList} />
+      ) : (
+        <QuizBoard
+          quizList={quizList}
+          step={step}
+          setStep={setStep}
+          handleSelectQuiz={handleSelectQuiz}
+        />
+      )}
+    </>
   );
 }

@@ -5,8 +5,6 @@ import type { Quiz } from "@/api";
 import Button from "@/app/_component/button";
 import Toast from "@/app/_component/toast";
 import { useToastStore, ToastStatus } from "@/store/toast";
-import { useCountStore } from "@/store/count";
-import { numberToTime } from "../../../util/time";
 
 export interface QuizBoardProps {
   quizList: Quiz[];
@@ -21,7 +19,6 @@ export default function QuizBoard({
   setStep,
   handleSelectQuiz,
 }: QuizBoardProps) {
-  const { count } = useCountStore();
   const { setHideToast } = useToastStore();
 
   useEffect(() => {
@@ -32,8 +29,6 @@ export default function QuizBoard({
 
   return (
     <div className="flex flex-col p-4 ">
-      <div className="text-right">소요시간 : {numberToTime(count)}</div>
-
       <ul className="mt-2">
         {quizList.slice(step, step + 1).map((quiz, i) => (
           <QuizCard

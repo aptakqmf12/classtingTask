@@ -4,6 +4,7 @@ import { devtools } from "zustand/middleware";
 interface CountState {
   count: number;
   isCounting: boolean;
+  setCountUp: () => void;
   setIsCounting: (bool: boolean) => void;
   initCount: () => void;
 }
@@ -11,24 +12,18 @@ interface CountState {
 export const useCountStore = create<CountState>()(
   devtools(
     (set) => {
-      let timer: NodeJS.Timeout;
-
       return {
         count: 0,
         isCounting: false,
-        setIsCounting: (bool) => {
-          if (bool) {
-            timer = setInterval(() => {
-              set((state) => ({ isCounting: bool, count: state.count + 1 }));
-            }, 1000);
-          } else {
-            clearInterval(timer);
-            set((state) => ({ isCounting: bool }));
-          }
+        setCountUp: () => {
+          set((state) => ({ count: state.count + 1 }));
         },
+        setIsCounting: (bool) => {
+          set(() => ({ isCounting: bool }));
+        },
+
         initCount: () => {
-          clearInterval(timer);
-          set((state) => ({ count: 0, isCounting: false }));
+          set(() => ({ count: 0, isCounting: false }));
         },
       };
     },
