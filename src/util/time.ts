@@ -1,5 +1,4 @@
 export const numberToTime = (num: number) => {
-  console.log(num);
   const sec = num % 60;
   const min = Math.floor(num / 60);
   const hour = Math.floor(min / 60);

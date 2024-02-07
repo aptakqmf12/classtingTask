@@ -34,10 +34,11 @@ export default function QuizPage() {
       })
       .catch((err) => {
         console.error(err);
+        alert("응답실패");
       });
   }, [setQuizList, setIsLoading, setIsCounting]);
 
-  if (isLoading) return "loading...";
+  if (isLoading) return "응답실패";
 
   return step === quizList.length ? (
     <ResultBoard quizList={quizList} />

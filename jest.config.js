@@ -5,7 +5,11 @@ const createJestConfig = nextJest({
 });
 
 const config = {
+  testEnvironmentOptions: {
+    customExportConditions: [""],
+  },
   testEnvironment: "jsdom",
+  setupFiles: ["./jest.polyfills.js"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
 };
 
